@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science of Indifference — Marat Bekmurzaev</title>
+
+
+<!-- Favicon: Balance / Equilibrium -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='none' stroke='%231a1a1a' stroke-width='4'/><path d='M20 50 L50 70 L80 50 M50 30 L50 70' fill='none' stroke='%231a1a1a' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background: linear-gradient(135deg, #f5f0e6 0%, #e8e0d5 50%, #dcd4c8 100%);
+            color: #1a1a1a;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .particles {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+        .particle {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: rgba(40, 40, 40, 0.12);
+            border-radius: 50%;
+            animation: float 25s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 30px;
+            position: relative; z-index: 1;
+        }
+        
+        .main-title {
+            text-align: center;
+            margin-bottom: 10px;
+            animation: fadeInUp 1s ease-out;
+        }
+        .main-title h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.15;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            font-size: 1.3em;
+            color: #5a5a5a;
+            font-style: italic;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .divider {
+            width: 80px; height: 2px;
+            background: linear-gradient(90deg, transparent, #3a3a3a, transparent);
+            margin: 35px auto;
+            animation: pulse 2.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; transform: scaleX(0.9); }
+            50% { opacity: 1; transform: scaleX(1); }
+        }
+        
+        .attention {
+            background: rgba(220, 210, 195, 0.7);
+            border: 1px solid rgba(40, 40, 40, 0.15);
+            border-radius: 10px;
+            padding: 40px 35px;
+            margin: 45px 0;
+            backdrop-filter: blur(8px);
+            animation: fadeInUp 1s ease-out 0.2s both;
+            position: relative; overflow: hidden;
+        }
+        .attention::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(40,40,40,0.2), transparent);
+        }
+        .attention h2 {
+            font-size: 1.7em;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 18px;
+            text-align: center;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+        .attention p {
+            font-size: 1.15em;
+            color: #2a2a2a;
+            text-align: center;
+            margin: 12px 0;
+            line-height: 1.7;
+        }
+        
+        /* Accordion styles */
+        .accordion {
+            margin: 50px 0 65px;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+        
+        .accordion-item {
+            background: rgba(235, 225, 210, 0.6);
+            border: 1px solid rgba(40, 40, 40, 0.12);
+            border-radius: 10px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .accordion-item:hover {
+            border-color: rgba(40, 40, 40, 0.25);
+            box-shadow: 0 4px 20px rgba(40, 40, 40, 0.08);
+        }
+        .accordion-item.active {
+            background: rgba(220, 210, 195, 0.85);
+            border-color: rgba(40, 40, 40, 0.3);
+        }
+        
+        .accordion-header {
+            padding: 22px 28px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            position: relative;
+        }
+        .accordion-header::after {
+            content: '▸';
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #3a3a3a;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            margin-left: 12px;
+        }
+        .accordion-item.active .accordion-header::after {
+            transform: rotate(90deg);
+            color: #1a1a1a;
+        }
+        .accordion-header h3 {
+            font-size: 1.35em;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease;
+            padding: 0 28px;
+        }
+        .accordion-item.active .accordion-content {
+            padding: 0 28px 24px;
+            transition: max-height 0.5s ease-in, padding 0.4s ease;
+        }
+        .accordion-content-inner {
+            padding-top: 8px;
+        }
+        .accordion-content p {
+            font-size: 1.05em;
+            color: #2a2a2a;
+            margin: 10px 0;
+            line-height: 1.7;
+        }
+        .accordion-content ul {
+            margin: 12px 0 0 20px;
+            color: #2a2a2a;
+        }
+        .accordion-content li {
+            margin: 6px 0;
+            font-size: 1.02em;
+        }
+        
+        /* Price highlight */
+        .price-highlight {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 12px 0 8px;
+        }
+        .price-badge {
+            background: linear-gradient(135deg, #3a3a3a, #5a5a5a);
+            color: #f5f0e6;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1.3em;
+            letter-spacing: 0.5px;
+            min-width: 85px;
+            text-align: center;
+        }
+        .price-note {
+            font-size: 0.95em;
+            color: #4a4a4a;
+            font-style: italic;
+        }
+        
+        .cta {
+            text-align: center;
+            margin: 60px 0 40px;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+        .buy-btn {
+            display: inline-block;
+            background: transparent;
+            color: #1a1a1a;
+            padding: 22px 65px;
+            text-decoration: none;
+            font-size: 1.25em;
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            border: 2px solid rgba(40, 40, 40, 0.4);
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.35s ease;
+            box-shadow: 0 0 25px rgba(40, 40, 40, 0.15);
+        }
+        .buy-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(40,40,40,0.15), transparent);
+            transition: left 0.55s ease;
+        }
+        .buy-btn:hover {
+            border-color: rgba(40, 40, 40, 0.8);
+            box-shadow: 0 0 45px rgba(40, 40, 40, 0.3);
+            transform: translateY(-3px);
+        }
+        .buy-btn:hover::before { left: 100%; }
+        
+        .no-refunds {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 25px;
+            line-height: 1.5;
+            max-width: 600px;
+            margin: 25px auto 0;
+            text-align: center;
+            padding: 0 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 25px;
+            color: #7a7a7a;
+            font-size: 0.9em;
+            animation: fadeInUp 1s ease-out 1s both;
+            border-top: 1px solid rgba(40,40,40,0.08);
+        }
+        
+        .smoke-bottom {
+            position: fixed;
+            bottom: 0; left: 0;
+            width: 100%; height: 180px;
+            background: linear-gradient(to top, rgba(40,40,40,0.05), transparent);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .main-title h1 { font-size: 2.3em; }
+            .subtitle { font-size: 1em; letter-spacing: 1.5px; }
+            .attention { padding: 30px 22px; }
+            .attention h2 { font-size: 1.35em; letter-spacing: 3px; }
+            .attention p { font-size: 1.05em; }
+            .accordion-header { padding: 18px 22px; }
+            .accordion-header h3 { font-size: 1.2em; }
+            .accordion-content { padding: 0 22px; }
+            .accordion-item.active .accordion-content { padding: 0 22px 20px; }
+            .price-badge { font-size: 1.15em; padding: 7px 14px; }
+            .buy-btn { padding: 18px 50px; font-size: 1.1em; }
+        }
+        @media (max-width: 480px) {
+            .main-title h1 { font-size: 1.9em; }
+            .accordion-header { padding: 16px 18px; flex-wrap: wrap; gap: 8px; }
+            .accordion-header h3 { font-size: 1.15em; }
+            .price-highlight { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .buy-btn { padding: 16px 40px; font-size: 1em; width: 100%; }
+        }
+        
+        /* Доступность: фокус для клавиатуры */
+        .accordion-header:focus {
+            outline: 2px solid rgba(40,40,40,0.3);
+            outline-offset: -2px;
+        }
+        .accordion-header:focus:not(:focus-visible) {
+            outline: none;
+        }
+        .accordion-header:focus-visible {
+            outline: 2px solid rgba(40,40,40,0.5);
+            outline-offset: -2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    <div class="smoke-bottom"></div>
+    
+    <div class="container">
+        <div class="main-title">
+            <h1>Science of Indifference</h1>
+            <div class="subtitle">A Calm Way to Quit Smoking — and More</div>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="attention">
+            <h2>Attention!</h2>
+            <p>This unique work shows that quitting smoking is only possible when there is confidence, calmness, and ease.</p>
+            <p>This is proven by statistics and explained in detail in the book.</p>
+        </div>
+        
+        <!-- Accordion sections -->
+        <div class="accordion">
+            <div class="accordion-item">
+                <div class="accordion-header" role="button" tabindex="0" aria-expanded="false" aria-controls="content-1" id="header-1">
+                    <h3>1. What It Is</h3>
+                </div>
+                <div class="accordion-content" id="content-1" role="region" aria-labelledby="header-1">
+                    <div class="accordion-content-inner">
+                        <p>A method based on scientific data.</p>
+                        <p>The only program of its kind, reflecting patterns identified in thousands of real smokers: it does not promise miracles, but shows the statistical truth of the quitting process.</p>
+                        <p>Works without illusions and provides a foundation for understanding how quitting nicotine really happens.</p>
+                        <ul>
+                            <li>Not a motivational pep talk</li>
+                            <li>Not "be a hero/the best"</li>
+                            <li>Not "you will quit today or tomorrow"</li>
+                        </ul>
+                        <p style="margin-top:10px"><em>It is an honest tool that helps you understand the only way to quit.</em></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header" role="button" tabindex="0" aria-expanded="false" aria-controls="content-2" id="header-2">
+                    <h3>2. Core Message</h3>
+                </div>
+                <div class="accordion-content" id="content-2" role="region" aria-labelledby="header-2">
+                    <div class="accordion-content-inner">
+                        <p>This method helps you quit calmly, because that is how the body actually works — confirmed by science.</p>
+                        <p>Ease here is not a promise, but the result of a scientifically proven process: the habit stops controlling you when quitting happens with confidence and without tension.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <div class="accordion-header" role="button" tabindex="0" aria-expanded="false" aria-controls="content-3" id="header-3">
+                    <h3>3. Price</h3>
+                </div>
+                <div class="accordion-content" id="content-3" role="region" aria-labelledby="header-3">
+                    <div class="accordion-content-inner">
+                        <div class="price-highlight">
+                            <span class="price-badge">$27</span>
+                            <span class="price-note">PDF — the honest minimum</span>
+                        </div>
+                        <p>This price is not about cost, but about signaling to the subconscious. The subconscious always seeks to justify invested resources — and that is why the book will be read. And it is worth reading, if only because it is based on statistics.</p>
+                        <p>About the average price of three packs of cigarettes in your region — for scientific understanding and the ease of quitting.</p>
+                        <p>Also suitable as a gift for a smoker: an investment in their freedom instead of another pack.</p>
+                        <p style="margin-top:10px"><em>In fact, this amount is only a fraction of what many spend trying to quit using other approaches. But this book gives what others do not: calmness and ease, backed by science.</em></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cta">
+            <a href="https://app.lava.top/products/fa02e41e-1550-4690-8f2c-17de59bc570d/e3392a5a-5472-41d5-a480-de943800cae1?currency=USD" 
+               id="buyLink" 
+               class="buy-btn">
+               Get the Book
+            </a>
+            <p class="no-refunds">
+                <strong>Digital product notice:</strong> No refunds after access is granted. 
+                You can't return a read book — just like you can't return a eaten meal. 
+                By purchasing, you agree to these terms.
+            </p>
+        </div>
+        
+        <footer>
+            <p>© 2025 Marat Bekmurzaev. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Генерация частиц
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 45; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDelay = Math.random() * 25 + 's';
+            p.style.animationDuration = (20 + Math.random() * 15) + 's';
+            particlesContainer.appendChild(p);
+        }
+        
+        // Accordion logic
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            const toggleAccordion = () => {
+                const item = header.closest('.accordion-item');
+                const content = header.nextElementSibling;
+                const isExpanded = header.getAttribute('aria-expanded') === 'true';
+                
+                // Переключаем текущий
+                header.setAttribute('aria-expanded', !isExpanded);
+                item.classList.toggle('active');
+                
+                // Анимация высоты через max-height
+                if (!isExpanded) {
+                    // Раскрываем: устанавливаем max-height равным scrollHeight
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                } else {
+                    // Скрываем
+                    content.style.maxHeight = null;
+                }
+            };
+            
+            // Клик мышкой
+            header.addEventListener('click', toggleAccordion);
+            
+            // Поддержка клавиатуры (Enter/Space)
+            header.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleAccordion();
+                }
+            });
+        });
+        
+        // Скрипт для передачи rev= параметра на Lava.top
+        document.addEventListener('DOMContentLoaded', function() {
+            const buyLink = document.getElementById('buyLink');
+            const baseUrl = 'https://app.lava.top/products/fa02e41e-1550-4690-8f2c-17de59bc570d/e3392a5a-5472-41d5-a480-de943800cae1';
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const rev = urlParams.get('rev');
+            
+            let finalUrl = baseUrl + '?currency=USD';
+            
+            if (rev && rev.trim() !== '') {
+                finalUrl += '&rev=' + encodeURIComponent(rev.trim());
+            } else {
+                finalUrl += '&rev=direct';
+            }
+            
+            buyLink.href = finalUrl;
+        });
+    </script>
+</body>
+</html>
