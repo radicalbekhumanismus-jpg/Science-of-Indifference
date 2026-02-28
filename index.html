@@ -480,6 +480,89 @@
             
             buyLink.href = finalUrl;
         });
-    </script>
+  <script>
+  // === CONFIG ===
+  const LAVA_BASE_URL = 'https://app.lava.top/products/fa02e41e-1550-4690-8f2c-17de59bc570d/e3392a5a-5472-41d5-a480-de943800cae1';
+  const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbziem31f8tJPuycY1tTkB5_bLPzqjciV3tbnLOTxDWTnXY2V2ENcIYHjeJO8N8tRksn/exec';
+  const PRODUCT_NAME = 'Science of Indifference';
+  
+  // === TRACKING FUNCTION ===
+  function sendToTracker(rev, amount) {
+    if (!WEBHOOK_URL) return;
+    const data = {
+      rev: rev,
+      amount: amount,
+      product: PRODUCT_NAME,
+      userAgent: navigator.userAgent
+    };
+    fetch(WEBHOOK_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).catch(err => console.log('Tracker error:', err));
+  }
+  
+  // === MAIN LOGIC (runs when DOM is ready) ===
+  document.addEventListener('DOMContentLoaded', function() {
+    
+    // 1. Particles animation
+    const particlesContainer = document.getElementById('particles');
+    if (particlesContainer) {
+      for (let i = 0; i < 45; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDelay = Math.random() * 25 + 's';
+        p.style.animationDuration = (20 + Math.random() * 15) + 's';
+        particlesContainer.appendChild(p);
+      }
+    }
+    
+    // 2. Accordion logic
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      const toggleAccordion = () => {
+        const item = header.closest('.accordion-item');
+        const content = header.nextElementSibling;
+        const isExpanded = header.getAttribute('aria-expanded') === 'true';
+        header.setAttribute('aria-expanded', !isExpanded);
+        item.classList.toggle('active');
+        if (!isExpanded) {
+          content.style.maxHeight = content.scrollHeight + 'px';
+        } else {
+          content.style.maxHeight = null;
+        }
+      };
+      header.addEventListener('click', toggleAccordion);
+      header.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          toggleAccordion();
+        }
+      });
+    });
+    
+    // 3. Lava.top link + Google Sheets tracking
+    const buyLink = document.getElementById('buyLink');
+    if (buyLink) {
+      const params = new URLSearchParams(window.location.search);
+      const rev = params.get('rev');
+      
+      let finalUrl = LAVA_BASE_URL + '?currency=USD';
+      if (rev && rev.trim() !== '') {
+        finalUrl += '&rev=' + encodeURIComponent(rev.trim());
+      } else {
+        finalUrl += '&rev=direct';
+      }
+      buyLink.href = finalUrl;
+      
+      // Send to Google Sheets for testing
+      if (rev && rev.trim() !== '') {
+        console.log('Partner detected:', rev);
+        // sendToTracker(rev.trim(), 'test'); // ⚠️ раскомментируй для теста
+      }
+    }
+  });
+</script>
 </body>
 </html>
