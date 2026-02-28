@@ -1,39 +1,27 @@
 # Science of Indifference — Landing Page
 
-Landing page for the book "Science of Indifference" by Marat Bekmurzaev.  
+Landing page for the book "Science of Indifference" by Marat Bekmurzaev.
 A calm, science-based method to quit smoking.
 
-Лендинг книги «Science of Indifference» Марата Бекмурзаева.  
-Спокойный, научно обоснованный метод отказа от курения.
+## ✨ Features
 
----
+- Responsive design (mobile/desktop)
+- Affiliate tracking via `rev` parameter
+- Lava.top payment integration
+- Minimalist, content-first design
 
-## ✨ Features / Возможности
+## 🚀 Deployment
 
-- Responsive design (mobile/desktop) / Адаптивный дизайн
-- Affiliate tracking via `rev` parameter / Трекинг партнёров через параметр `rev`
-- Lava.top payment integration / Интеграция с Lava.top
-- Minimalist, content-first design / Минималистичный дизайн, фокус на контенте
-
----
-
-## 🚀 Deployment / Развёртывание
-
-1. Upload `index.html` to your hosting / Загрузите `index.html` на хостинг
-2. Configure Lava.top product link / Настройте ссылку товара в Lava.top
-3. Set up Google Sheets webhook for analytics (optional) / Подключите Google Sheets для аналитики (опционально)
-
----
+1. Upload `index.html` to your hosting
+2. Configure Lava.top product link
+3. Set up Google Sheets webhook for analytics (optional)
 
 ## 🔧 Tech Stack
 
 - HTML5, CSS3, Vanilla JavaScript
-- No frameworks / Без фреймворков
-- Zero dependencies / Нулевые зависимости
-
----
+- No frameworks
+- Zero dependencies
 
 ## © License
 
-© 2025 Marat Bekmurzaev. All rights reserved.  
-Приватный проект. Все права защищены.
+© 2025 Marat Bekmurzaev. All rights reserved.
