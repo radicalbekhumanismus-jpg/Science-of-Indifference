@@ -559,10 +559,11 @@
       // Send to Google Sheets for testing
       if (rev && rev.trim() !== '') {
         console.log('Partner detected:', rev);
-        // sendToTracker(rev.trim(), 'test'); // ⚠️ раскомментируй для теста
+        sendToTracker(rev.trim(), 'test'); // ⚠️ раскомментируй для теста
       }
     }
   });
 </script>
 </body>
 </html>
+
