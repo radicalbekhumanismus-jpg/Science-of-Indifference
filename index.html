@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Science of Indifference — Marat Bekmurzaev</title>
 
-
 <!-- Favicon: Balance / Equilibrium -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='none' stroke='%231a1a1a' stroke-width='4'/><path d='M20 50 L50 70 L80 50 M50 30 L50 70' fill='none' stroke='%231a1a1a' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 
@@ -327,6 +326,81 @@
             outline: 2px solid rgba(40,40,40,0.5);
             outline-offset: -2px;
         }
+
+        /* === MODAL STYLES === */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background: #f5f0e6;
+            margin: 15% auto;
+            padding: 40px 35px;
+            border-radius: 12px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: modalFadeIn 0.3s ease;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .modal-content h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+        .modal-content p {
+            font-size: 1.05em;
+            color: #333;
+            line-height: 1.7;
+            margin: 12px 0;
+        }
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .btn-no, .btn-yes {
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        .btn-no {
+            background: transparent;
+            border: 2px solid #888;
+            color: #666;
+        }
+        .btn-no:hover {
+            border-color: #555;
+            color: #333;
+        }
+        .btn-yes {
+            background: #1a1a1a;
+            color: #f5f0e6;
+            border: 2px solid #1a1a1a;
+        }
+        .btn-yes:hover {
+            background: #333;
+            border-color: #333;
+            transform: translateY(-2px);
+        }
+        @media (max-width: 480px) {
+            .modal-content { margin: 25% auto; padding: 30px 25px; }
+            .modal-buttons { flex-direction: column; }
+            .btn-no, .btn-yes { width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -400,20 +474,32 @@
         </div>
         
         <div class="cta">
-            <a href="https://app.lava.top/products/fa02e41e-1550-4690-8f2c-17de59bc570d/e3392a5a-5472-41d5-a480-de943800cae1?currency=USD" 
-               id="buyLink" 
-               class="buy-btn">
-               Get the Book
-            </a>
+            <!-- Кнопка теперь не ссылка, а button -->
+            <button id="buyLink" class="buy-btn">Get the Book</button>
             <p class="no-refunds">
                 <strong>Digital product notice:</strong> No refunds after access is granted. 
                 You can't return a read book — just like you can't return a eaten meal. 
                 By purchasing, you agree to these terms.
             </p>
         </div>
-                <footer>
+        
+        <footer>
             <p>© 2025 Marat Bekmurzaev. All rights reserved.</p>
         </footer>
+    </div>
+
+    <!-- === MODAL WINDOW (вставлено перед </body>) === -->
+    <div id="buyModal" class="modal">
+        <div class="modal-content">
+            <h2>You're About to Purchase</h2>
+            <p>This book is based on science and statistics. It does not promise miracles.</p>
+            <p>If you're ready to quit without fighting — this is for you.</p>
+            <p style="margin: 20px 0; font-weight: 700;">Are you sure you want to proceed?</p>
+            <div class="modal-buttons">
+                <button id="modalNo" class="btn-no">I'll Think About It</button>
+                <button id="modalYes" class="btn-yes">Yes, I Decide</button>
+            </div>
+        </div>
     </div>
     
     <script>
@@ -453,7 +539,7 @@
             });
         });
         
-        // === 3. CONFIG (без пробелов!) ===
+        // === 3. CONFIG (URLs с .trim() для защиты от пробелов) ===
         const LAVA_BASE_URL = 'https://app.lava.top/products/fa02e41e-1550-4690-8f2c-17de59bc570d/e3392a5a-5472-41d5-a480-de943800cae1'.trim();
         const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxL3rh8p5RxXJ4XgQmW34kPnsg3v7R8f9WR8Is5OMYqsRgCACMZvuV4JYAhPHn-a1Lh/exec'.trim();
         const PRODUCT_NAME = 'Science of Indifference';
@@ -475,35 +561,58 @@
             }).catch(err => console.log('Tracker error:', err));
         }
         
-        // === 5. MAIN LOGIC (запускается когда DOM готов) ===
+        // === 5. MAIN LOGIC (модальное окно + трекинг решений) ===
         document.addEventListener('DOMContentLoaded', function() {
-            // Lava.top link
             const buyLink = document.getElementById('buyLink');
+            const modal = document.getElementById('buyModal');
+            const modalNo = document.getElementById('modalNo');
+            const modalYes = document.getElementById('modalYes');
+            
             if (buyLink) {
                 const params = new URLSearchParams(window.location.search);
                 const rev = params.get('rev');
+                
                 let finalUrl = LAVA_BASE_URL + '?currency=USD';
                 if (rev && rev.trim() !== '') {
                     finalUrl += '&rev=' + encodeURIComponent(rev.trim());
                 } else {
                     finalUrl += '&rev=direct';
                 }
-                buyLink.href = finalUrl;
                 
-                // Тест трекинга
-                if (rev && rev.trim() !== '') {
-                    console.log('Partner detected:', rev);
-                    //sendToTracker(rev.trim(), 'test');
+                // Показываем модальное окно при клике на "Купить"
+                buyLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    modal.style.display = 'block';
+                });
+                
+                // Кнопка "Я подумаю" — просто закрываем окно, НИЧЕГО НЕ ПИШЕМ
+                if (modalNo) {
+                    modalNo.addEventListener('click', function() {
+                        modal.style.display = 'none';
+                    });
                 }
+                
+                // Кнопка "Да, я решаю" — записываем в таблицу + переходим на оплату
+                if (modalYes) {
+                    modalYes.addEventListener('click', function() {
+                        // Записываем ТОЛЬКО тех, кто принял решение
+                        if (rev && rev.trim() !== '') {
+                            console.log('Decision recorded:', rev);
+                            sendToTracker(rev.trim(), 'decision_made');
+                        }
+                        // Переход на оплату (ссылка была скрыта до этого момента)
+                        window.location.href = finalUrl;
+                    });
+                }
+                
+                // Закрыть модальное окно при клике вне его области
+                window.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
             }
         });
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
