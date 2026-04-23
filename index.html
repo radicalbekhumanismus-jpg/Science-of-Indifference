@@ -427,7 +427,7 @@
             }
         }
         
-        // === 2. ACCORDION ===
+               // === 2. ACCORDION ===
         document.querySelectorAll('.accordion-header').forEach(header => {
             const toggleAccordion = () => {
                 const item = header.closest('.accordion-item');
@@ -448,82 +448,7 @@
                     toggleAccordion();
                 }
             });
-        });
-        
-        // === 3. CONFIG (URLs с .trim() для защиты от пробелов) ===
-        const LAVA_BASE_URL = 'https://app.lava.top/products/fa02e41e-1550-4690-8f2c-17de59bc570d/e3392a5a-5472-41d5-a480-de943800cae1'.trim();
-        const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxL3rh8p5RxXJ4XgQmW34kPnsg3v7R8f9WR8Is5OMYqsRgCACMZvuV4JYAhPHn-a1Lh/exec'.trim();
-        const PRODUCT_NAME = 'Science of Indifference';
-        
-        // === 4. TRACKING FUNCTION ===
-        function sendToTracker(rev, amount) {
-            if (!WEBHOOK_URL) return;
-            const data = {
-                rev: rev,
-                amount: amount,
-                product: PRODUCT_NAME,
-                userAgent: navigator.userAgent
-            };
-            fetch(WEBHOOK_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            }).catch(err => console.log('Tracker error:', err));
-        }
-        
-        // === 5. MAIN LOGIC (модальное окно + трекинг решений) ===
-        document.addEventListener('DOMContentLoaded', function() {
-            const buyLink = document.getElementById('buyLink');
-            const modal = document.getElementById('buyModal');
-            const modalNo = document.getElementById('modalNo');
-            const modalYes = document.getElementById('modalYes');
-            
-            if (buyLink) {
-                const params = new URLSearchParams(window.location.search);
-                const rev = params.get('rev');
-                
-                let finalUrl = LAVA_BASE_URL + '?currency=USD';
-                if (rev && rev.trim() !== '') {
-                    finalUrl += '&rev=' + encodeURIComponent(rev.trim());
-                } else {
-                    finalUrl += '&rev=direct';
-                }
-                
-                // Показываем модальное окно при клике на "Купить"
-                buyLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    modal.style.display = 'block';
-                });
-                
-                // Кнопка "Я подумаю" — просто закрываем окно, НИЧЕГО НЕ ПИШЕМ
-                if (modalNo) {
-                    modalNo.addEventListener('click', function() {
-                        modal.style.display = 'none';
-                    });
-                }
-                
-                // Кнопка "Да, я решаю" — записываем в таблицу + переходим на оплату
-                if (modalYes) {
-                    modalYes.addEventListener('click', function() {
-                        // Записываем ТОЛЬКО тех, кто принял решение
-                        if (rev && rev.trim() !== '') {
-                            console.log('Decision recorded:', rev);
-                            sendToTracker(rev.trim(), 'decision_made');
-                        }
-                        // Переход на оплату (ссылка была скрыта до этого момента)
-                        window.location.href = finalUrl;
-                    });
-                }
-                
-                // Закрыть модальное окно при клике вне его области
-                window.addEventListener('click', function(e) {
-                    if (e.target === modal) {
-                        modal.style.display = 'none';
-                    }
-                });
-            }
-        });
-    </script>
+        });  // ← единственная закрывающая скобка аккордеона
+    </script>  // ← сразу закрываем скрипт
 </body>
 </html>
