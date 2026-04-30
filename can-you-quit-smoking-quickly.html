@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Statistical patterns of relapse on day 3 — and why calmness, not willpower, breaks the cycle.">
+    <link rel="canonical" href="https://maratbekmurzaev.github.io/science-of-indifference/article-day3-relapse.html">
+    <title>Can you quit smoking quickly?</title>
+
+<!-- Favicon: Balance / Equilibrium -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='none' stroke='%231a1a1a' stroke-width='4'/><path d='M20 50 L50 70 L80 50 M50 30 L50 70' fill='none' stroke='%231a1a1a' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background: linear-gradient(135deg, #f5f0e6 0%, #e8e0d5 50%, #dcd4c8 100%);
+            color: #1a1a1a;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+        }
+        
+        .particles {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+        .particle {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: rgba(40, 40, 40, 0.12);
+            border-radius: 50%;
+            animation: float 25s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 30px;
+            position: relative; z-index: 1;
+        }
+        
+        .main-title {
+            text-align: center;
+            margin-bottom: 10px;
+            animation: fadeInUp 1s ease-out;
+        }
+        .main-title h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.15;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            font-size: 1.3em;
+            color: #5a5a5a;
+            font-style: italic;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .divider {
+            width: 80px; height: 2px;
+            background: linear-gradient(90deg, transparent, #3a3a3a, transparent);
+            margin: 35px auto;
+            animation: pulse 2.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; transform: scaleX(0.9); }
+            50% { opacity: 1; transform: scaleX(1); }
+        }
+        
+        .attention {
+            background: rgba(220, 210, 195, 0.7);
+            border: 1px solid rgba(40, 40, 40, 0.15);
+            border-radius: 10px;
+            padding: 40px 35px;
+            margin: 45px 0;
+            backdrop-filter: blur(8px);
+            animation: fadeInUp 1s ease-out 0.2s both;
+            position: relative; overflow: hidden;
+        }
+        .attention::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(40,40,40,0.2), transparent);
+        }
+        .attention h2 {
+            font-size: 1.7em;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 18px;
+            text-align: center;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+        .attention p {
+            font-size: 1.15em;
+            color: #2a2a2a;
+            text-align: center;
+            margin: 12px 0;
+            line-height: 1.7;
+        }
+        
+        /* Accordion styles */
+        .accordion {
+            margin: 50px 0 65px;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+        
+        .accordion-item {
+            background: rgba(235, 225, 210, 0.6);
+            border: 1px solid rgba(40, 40, 40, 0.12);
+            border-radius: 10px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .accordion-item:hover {
+            border-color: rgba(40, 40, 40, 0.25);
+            box-shadow: 0 4px 20px rgba(40, 40, 40, 0.08);
+        }
+        .accordion-item.active {
+            background: rgba(220, 210, 195, 0.85);
+            border-color: rgba(40, 40, 40, 0.3);
+        }
+        
+        .accordion-header {
+            padding: 22px 28px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            position: relative;
+        }
+        .accordion-header::after {
+            content: '▸';
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #3a3a3a;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            margin-left: 12px;
+        }
+        .accordion-item.active .accordion-header::after {
+            transform: rotate(90deg);
+            color: #1a1a1a;
+        }
+        .accordion-header h3 {
+            font-size: 1.35em;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease;
+            padding: 0 28px;
+        }
+        .accordion-item.active .accordion-content {
+            padding: 0 28px 24px;
+            transition: max-height 0.5s ease-in, padding 0.4s ease;
+        }
+        .accordion-content-inner {
+            padding-top: 8px;
+        }
+        .accordion-content p {
+            font-size: 1.05em;
+            color: #2a2a2a;
+            margin: 10px 0;
+            line-height: 1.7;
+        }
+        .accordion-content ul {
+            margin: 12px 0 0 20px;
+            color: #2a2a2a;
+        }
+        .accordion-content li {
+            margin: 6px 0;
+            font-size: 1.02em;
+        }
+        
+        /* Price highlight */
+        .price-highlight {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 12px 0 8px;
+        }
+        .price-badge {
+            background: linear-gradient(135deg, #3a3a3a, #5a5a5a);
+            color: #f5f0e6;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1.3em;
+            letter-spacing: 0.5px;
+            min-width: 85px;
+            text-align: center;
+        }
+        .price-note {
+            font-size: 0.95em;
+            color: #4a4a4a;
+            font-style: italic;
+        }
+        
+        .cta {
+            text-align: center;
+            margin: 60px 0 40px;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+        .buy-btn {
+            display: inline-block;
+            background: transparent;
+            color: #1a1a1a;
+            padding: 22px 65px;
+            text-decoration: none;
+            font-size: 1.25em;
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            border: 2px solid rgba(40, 40, 40, 0.4);
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.35s ease;
+            box-shadow: 0 0 25px rgba(40, 40, 40, 0.15);
+        }
+        .buy-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(40,40,40,0.15), transparent);
+            transition: left 0.55s ease;
+        }
+        .buy-btn:hover {
+            border-color: rgba(40, 40, 40, 0.8);
+            box-shadow: 0 0 45px rgba(40, 40, 40, 0.3);
+            transform: translateY(-3px);
+        }
+        .buy-btn:hover::before { left: 100%; }
+        
+        .no-refunds {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 25px;
+            line-height: 1.5;
+            max-width: 600px;
+            margin: 25px auto 0;
+            text-align: center;
+            padding: 0 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 25px;
+            color: #7a7a7a;
+            font-size: 0.9em;
+            animation: fadeInUp 1s ease-out 1s both;
+            border-top: 1px solid rgba(40,40,40,0.08);
+        }
+        
+        .smoke-bottom {
+            position: fixed;
+            bottom: 0; left: 0;
+            width: 100%; height: 180px;
+            background: linear-gradient(to top, rgba(40,40,40,0.05), transparent);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 768px) {
+            .main-title h1 { font-size: 2.3em; }
+            .subtitle { font-size: 1em; letter-spacing: 1.5px; }
+            .attention { padding: 30px 22px; }
+            .attention h2 { font-size: 1.35em; letter-spacing: 3px; }
+            .attention p { font-size: 1.05em; }
+            .accordion-header { padding: 18px 22px; }
+            .accordion-header h3 { font-size: 1.2em; }
+            .accordion-content { padding: 0 22px; }
+            .accordion-item.active .accordion-content { padding: 0 22px 20px; }
+            .price-badge { font-size: 1.15em; padding: 7px 14px; }
+            .buy-btn { padding: 18px 50px; font-size: 1.1em; }
+        }
+        @media (max-width: 480px) {
+            .main-title h1 { font-size: 1.9em; }
+            .accordion-header { padding: 16px 18px; flex-wrap: wrap; gap: 8px; }
+            .accordion-header h3 { font-size: 1.15em; }
+            .price-highlight { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .buy-btn { padding: 16px 40px; font-size: 1em; width: 100%; }
+        }
+        
+        /* Доступность: фокус для клавиатуры */
+        .accordion-header:focus {
+            outline: 2px solid rgba(40,40,40,0.3);
+            outline-offset: -2px;
+        }
+        .accordion-header:focus:not(:focus-visible) {
+            outline: none;
+        }
+        .accordion-header:focus-visible {
+            outline: 2px solid rgba(40,40,40,0.5);
+            outline-offset: -2px;
+        }
+        .article-card {
+    background: rgba(235, 225, 210, 0.5);
+    border: 1px solid rgba(40, 40, 40, 0.12);
+    border-radius: 10px;
+    padding: 40px 35px;
+    margin: 40px auto;
+    max-width: 720px;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(40, 40, 40, 0.05);
+}
+.article-card p {
+    font-size: 1.15em;
+    line-height: 1.8;
+    color: #2a2a2a;
+    margin-bottom: 20px;
+}
+.article-card p:last-child {
+    margin-bottom: 0;
+}
+    </style>
+</head>
+<body>
+       <div class="particles" id="particles"></div>
+    <div class="smoke-bottom"></div>
+    
+    <div class="container"> <!-- === ДОБАВИТЬ ЭТУ СТРОКУ === -->
+    
+      
+    <!-- 1. Ссылка на главную (вместо старого заголовка) -->
+<div style="text-align:center;margin-bottom:40px;">
+    <a href="index.html" style="font-size:1.1em;color:#5a5a5a;text-decoration:none;border-bottom:1px dotted rgba(40,40,40,0.3);">← Science of Indifference</a>
+</div>
+
+<!-- 2. Заголовок статьи -->
+<h1 style="font-size:2.2em;font-weight:700;line-height:1.3;margin-bottom:12px;text-align:center;color:#1a1a1a;">Can you quit smoking quickly?</h1>
+
+<!-- 3. Дата и время чтения -->
+<p style="text-align:center;color:#6a6a6a;font-size:0.95em;font-style:italic;margin-bottom:35px;">Published April 24, 2026 · 5 min read</p>
+
+<!-- 4. НОВЫЙ разделитель (тот же класс, та же анимация) -->
+<div class="divider"></div>
+
+<article class="article-card">
+    <p>Let me guess: if you're asking this question, you're not looking for a quick fix because you believe in miracles. You're looking for one because you're tired of the cycle — "tried, relapsed, felt like a failure." I know that cycle very well.</p>
+    <p>There are two ways to answer this question: the scientific (and uncomfortable) way, or the pleasant (and dishonest) way.</p>
+    <p>If you want the pleasant answer, then yes — quitting quickly is possible. Smoke and quit (throw the cigarette away before the next one... sorry, bad joke).</p>
+    <p>But if you're a realist and want the uncomfortable truth, then we need to clarify a few things first: how long you've been smoking, your motivation, your experience, and the psychology of the person who quit quickly.</p>
+    <p>Here's the clarification: if someone hasn't been smoking for very long, has enough experience working with this habit, or has a certain psychological makeup, then yes — quitting smoking quickly is possible.</p>
+    <p>But here's another question: will it be easy?</p>
+    <p>As for beginners who quit easily right away, there's not much to say except praise for quickly understanding the danger and sneakiness of this habit.</p>
+    <p>It's a different story with people who can "quit easily" but have significant smoking experience. Almost every heavy smoker knows someone who can go without smoking for a long time, but at some point easily picks up a cigarette again, only to ignore it once more.</p>
+    <p>This is a special but fairly common type. Roughly one in several fellow sufferers. And there are several reasons for this ease.</p>
+    <p>First, it could be someone with well-developed tolerance to nicotine cravings. These smokers handle withdrawal symptoms relatively easily.</p>
+    <p>Second, it could be that rare individual who immediately taught their body to consume nicotine in small doses and can continue "playing around" with smoking their whole life.</p>
+    <p>Naturally, both of these traits can coexist, creating a third or even fourth subtype of those who "quit easily and quickly." Essentially, they all share that very skill — not perceiving this addiction as the big deal everyone talks about, the one that makes people think quitting should be easy. But unfortunately, this does NOT guarantee their habit won't progress to a severe form. And the reverse is also true.</p>
+    <p>Then there are those with a very strong motivation to quit. But here, the smoker needs to maintain that motivation for the rest of their life.</p>
+    <p>And the most famous type of "easy quitters" — the prepared or trained ones. Most of us only see the result of their journey. As a rule, these are strong, determined people who relentlessly pursue their goal and are fully aware of what they're doing.</p>
+    <p>This type is the most common. But among them are many who somehow believe every smoker must follow their path. The path of pain and white-knuckling through it.</p>
+    <p>As a rule, it's exactly these people — former smokers — who spread the famous myth: "be strong," "tough it out," "don't you dare give up," and so on.</p>
+    <p>So, answering the article's question "can you quit?" directly, here's my answer:</p>
+    <p>— Scientifically proven: you most likely won't quit immediately, unfortunately. But that absolutely does NOT mean you'll smoke for the rest of your life. Not at all! Not even close.</p>
+    <p>The expectation of "quitting quickly" creates pressure that the addiction itself often didn't have. Quitting isn't a light switch — it's a gradual recalibration of your nervous system.</p>
+    <p>What's much more important is freeing yourself from the belief that you "need to quit immediately" and "quickly." You might as well ask: "Can I learn to operate complex machinery quickly?" or "How do I do the splits quickly?" Just like that. Once.</p>
+    <p>That's exactly why I wrote a book about how to release the burden of demands, shame, and anxiety.</p>
+    <p>The book "The Science of Indifference" shows how quitting works — not only from a scientific perspective. It helps you let go of nicotine cravings without the heaviest burden — the feeling of betraying yourself because of a relapse. A relapse here isn't going back to square one.</p>
+    <p>The book shows how to use it for adjustment, not as a reason for self-flagellation.</p>
+    <p>The book provides several unique methods, one of which, for example, allows you to develop indifference toward cigarettes through enjoyment.</p>
+    <p>Follow the link below and see for yourself.</p>
+
+</article>
+
+<!-- 6. Переход к книге + кнопка -->
+<div style="margin:50px 0 35px;text-align:center;">
+    <p style="font-size:1.05em;color:#3a3a3a;line-height:1.7;">
+        Full methodology in the book.<br>
+        <a href="index.html" style="color:#1a1a1a;font-weight:600;text-decoration:none;border-bottom:1px dotted rgba(40,40,40,0.4);">Return to main page →</a>
+    </p>
+</div>
+
+<div style="text-align:center;margin:40px 0;">
+    <a href="index.html" class="buy-btn" style="padding:18px 50px;font-size:1.1em;">Back to main</a>
+</div>
+        
+        
+        
+     <footer>
+    <p>© 2025 Marat Bekmurzaev. All rights reserved.</p>
+    <p style="margin-top:8px;font-size:0.85em;color:#6a6a6a;">
+        <a href="https://www.facebook.com/profile.php?id=100001094707118" 
+           style="color:#6a6a6a;text-decoration:none;border-bottom:1px dotted rgba(40,40,40,0.3);" 
+           target="_blank" rel="noopener">Marat Bekmurzaev on Facebook</a>
+    </p>
+    </footer>
+        
+    </div>
+    
+    <script>
+        // === 1. PARTICLES ===
+        const particlesContainer = document.getElementById('particles');
+        if (particlesContainer) {
+            for (let i = 0; i < 45; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDelay = Math.random() * 25 + 's';
+                p.style.animationDuration = (20 + Math.random() * 15) + 's';
+                particlesContainer.appendChild(p);
+            }
+        }
+        
+               // === 2. ACCORDION ===
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            const toggleAccordion = () => {
+                const item = header.closest('.accordion-item');
+                const content = header.nextElementSibling;
+                const isExpanded = header.getAttribute('aria-expanded') === 'true';
+                header.setAttribute('aria-expanded', !isExpanded);
+                item.classList.toggle('active');
+                if (!isExpanded) {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                } else {
+                    content.style.maxHeight = null;
+                }
+            };
+            header.addEventListener('click', toggleAccordion);
+            header.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleAccordion();
+                }
+            });
+        });  // ← единственная закрывающая скобка аккордеона
+    </script>  
+</body>
+</html>
